@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  database_minha-rota:
+    image: postgres
+    container_name: database_minha-rota
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=rota
+      - POSTGRES_DB=minha-rota
+    volumes:
+      - pgdata:/data/postgres
+  app:
+    build: .
+    container_name: minha-rota
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/usr/app
+
+volumes:
+  pgdata:
+    driver: local
