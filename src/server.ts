@@ -14,7 +14,7 @@ import { AppError } from "./errors/AppError"
 
 import cors from 'cors'
 
-const allowedOrigins = ['http://localhost:8080']
+const allowedOrigins = ['http://localhost:3000']
 
 const options: cors.CorsOptions = {
     origin: allowedOrigins

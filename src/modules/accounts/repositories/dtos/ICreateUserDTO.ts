@@ -3,6 +3,7 @@ interface ICreateUserDTO {
     email: string
     password: string
     cpf: string
+    cell: string
     birth_date: string
 
 }

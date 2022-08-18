@@ -29,6 +29,10 @@ export class CreateUser1659480084765 implements MigrationInterface {
                         type: 'varchar'
                     },
                     {
+                        name: 'cell',
+                        type: 'varchar'
+                    },
+                    {
                         name: 'birth_date',
                         type: 'date',
                     },

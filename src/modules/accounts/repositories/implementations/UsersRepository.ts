@@ -10,14 +10,16 @@ class UsersRepository implements IUsersRepository {
     constructor() {
         this.repository = AppDataSource.getRepository(User)
     }
+    
 
 
-    async create({ name, email, password, cpf, birth_date }: ICreateUserDTO): Promise<void> {
+    async create({ name, email, password, cpf, cell, birth_date }: ICreateUserDTO): Promise<void> {
         const user = this.repository.create({
             name,
             email,
             password,
             cpf,
+            cell,
             birth_date
         })
         await this.repository.save(user)
@@ -30,6 +32,11 @@ class UsersRepository implements IUsersRepository {
 
     async findById(id: string): Promise<User> {
         const user = await this.repository.findOne({ where: { id: id } })
+        return user
+    }
+
+    async findByCPF(cpf: string): Promise<User> {
+        const user = await this.repository.findOne({ where: { cpf: cpf } })
         return user
     }
 

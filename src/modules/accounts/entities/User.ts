@@ -19,6 +19,9 @@ class User {
     cpf: string
 
     @Column()
+    cell: string
+
+    @Column()
     isAdmin: boolean
 
     @Column({ type: 'date' })

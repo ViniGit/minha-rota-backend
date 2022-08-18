@@ -4,11 +4,12 @@ import { AppError } from "../../../../errors/AppError"
 
 interface IResponse {
     email: string,
-    isAdmin: boolean
+    isAdmin: boolean,
+    name: string
 }
 
 @injectable()
-class GetUserByTokenUseCase {
+class GetUserByIdUseCase {
     constructor(
         @inject("UsersRepository")
         private usersRepository: IUsersRepository) { }
@@ -21,10 +22,11 @@ class GetUserByTokenUseCase {
 
         return {
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            name: user.name
         }
     }
 
 }
 
-export { GetUserByTokenUseCase }
+export { GetUserByIdUseCase }

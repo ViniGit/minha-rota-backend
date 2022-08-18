@@ -2,9 +2,9 @@ import { Request, Response } from "express"
 import { container } from "tsyringe"
 import { AppError } from "../../../../errors/AppError"
 
-import { GetUserByTokenUseCase } from "./GetUserByTokenUseCase"
+import { GetUserByIdUseCase } from "./GetUserByIdUseCase"
 
-class GetUserByTokenController {
+class GetUserByIdController {
 
     async handle(request: Request, response: Response): Promise<Response> {
 
@@ -13,7 +13,7 @@ class GetUserByTokenController {
         if (!user_id)
             throw new AppError('User not found!')
 
-        const createUserUseCase = container.resolve(GetUserByTokenUseCase)
+        const createUserUseCase = container.resolve(GetUserByIdUseCase)
 
         const user = await createUserUseCase.execute(user_id)
 
@@ -22,4 +22,4 @@ class GetUserByTokenController {
     }
 }
 
-export { GetUserByTokenController }
+export { GetUserByIdController }
