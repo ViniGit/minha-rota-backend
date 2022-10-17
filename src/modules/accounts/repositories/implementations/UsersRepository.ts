@@ -2,7 +2,9 @@ import { Repository } from "typeorm"
 import { AppDataSource } from "../../../../database/data-source";
 import { User } from "../../entities/User";
 import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
+import { IUpdateUserDTO } from "../dtos/IUpdateUserDTO";
 import { IUsersRepository } from "../IUsersRepository";
+import { AppError } from "../../../../errors/AppError"
 
 class UsersRepository implements IUsersRepository {
     private repository: Repository<User>
@@ -10,8 +12,6 @@ class UsersRepository implements IUsersRepository {
     constructor() {
         this.repository = AppDataSource.getRepository(User)
     }
-    
-
 
     async create({ name, email, password, cpf, cell, birth_date }: ICreateUserDTO): Promise<void> {
         const user = this.repository.create({
@@ -40,6 +40,21 @@ class UsersRepository implements IUsersRepository {
         return user
     }
 
+    async update({ name, email, cpf, cell, birth_date, id }: IUpdateUserDTO): Promise<void> {
+        try {
+            await this.repository.update({
+                id: id,
+            }, {
+                name: name,
+                email: email,
+                cpf: cpf,
+                cell: cell,
+                birth_date: birth_date,
+            })
+        } catch (error) {
+            throw new AppError("Não foi possível atualizar o usuário")
+        }
+    }
 }
 
 export { UsersRepository }
