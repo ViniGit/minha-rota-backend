@@ -24,8 +24,8 @@ class User {
     @Column()
     isAdmin: boolean
 
-    @Column({ type: 'date' })
-    birth_date: string
+    @Column()
+    birth_date: Date
 
     @CreateDateColumn()
     created_at: Date

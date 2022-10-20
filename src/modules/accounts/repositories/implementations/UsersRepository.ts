@@ -40,19 +40,42 @@ class UsersRepository implements IUsersRepository {
         return user
     }
 
-    async update({ name, email, cpf, cell, birth_date, id }: IUpdateUserDTO): Promise<void> {
+    async update({ name, email, cpf, cell, birth_date, id }: IUpdateUserDTO): Promise<User> {
         try {
-            await this.repository.update({
-                id: id,
-            }, {
-                name: name,
-                email: email,
-                cpf: cpf,
-                cell: cell,
-                birth_date: birth_date,
-            })
+            let user = await this.repository.
+                createQueryBuilder().
+                update(User).
+                set({
+                    name: name,
+                    email: email,
+                    cpf: cpf,
+                    cell: cell,
+                    birth_date: birth_date,
+                }).
+                where("id = :id", { id: id }).
+                returning(['id', 'email', 'cpf', 'cell', 'birth_date', 'isAdmin', 'name']).
+                execute()
+
+            return user.raw[0]
         } catch (error) {
             throw new AppError("Não foi possível atualizar o usuário")
+        }
+    }
+
+    async updatePassword(id: string, newPassword: string): Promise<void> {
+        try {
+            await this.repository.
+                createQueryBuilder().
+                update(User).
+                set({
+                    password: newPassword,
+                }).
+                where("id = :id", { id: id }).
+                execute()
+
+        } catch (err) {
+            console.error(err)
+            throw new AppError(err)
         }
     }
 }

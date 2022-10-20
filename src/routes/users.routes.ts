@@ -12,7 +12,7 @@ const getUserByEmailController = new GetUserByEmailController()
 const updateUserController = new UpdateUserController()
 // usersRoutes.use(esureAuthenticated)
 usersRoutes.post('/', createUserController.handle)
-usersRoutes.get('/email', getUserByEmailController.handle)
+usersRoutes.get('/:email', getUserByEmailController.handle)
 usersRoutes.put('/:id', updateUserController.handle)
 
 export { usersRoutes }

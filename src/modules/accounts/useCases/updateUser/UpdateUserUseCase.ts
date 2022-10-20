@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe"
-import { hash } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
+import { User } from "../../entities/User";
 import { ICreateUserDTO } from "../../repositories/dtos/ICreateUserDTO"
 import { IUsersRepository } from "../../repositories/IUsersRepository"
 import { AppError } from "../../../../errors/AppError"
@@ -11,12 +12,12 @@ class UpdateUserUseCase {
         @inject("UsersRepository")
         private usersRepository: IUsersRepository) { }
 
-    async execute({ name, email, cpf, cell, birth_date, id }: IUpdateUserDTO): Promise<void> {
+    async execute({ name, email, cpf, cell, birth_date, id }: IUpdateUserDTO): Promise<User> {
 
         const userEmailExists = await this.usersRepository.findById(id)
 
         if (userEmailExists) {
-            await this.usersRepository.update({
+            let user = await this.usersRepository.update({
                 name,
                 email,
                 cpf,
@@ -24,10 +25,27 @@ class UpdateUserUseCase {
                 birth_date,
                 id
             })
+
+            return user
         } else
             throw new AppError('User not exists')
+    }
 
+    async verifyOldPassword(currentPassword: string, email: string): Promise<Boolean> {
 
+        const user = await this.usersRepository.findByEmail(email)
+        const passwordMatch = await compare(currentPassword, user.password)
+
+        if (!passwordMatch) {
+            throw new AppError('Senha incorreta!')
+        }
+
+        return true
+    }
+
+    async updatePassword(id: string, newPassword: string): Promise<void> {
+        const passwordHash = await hash(newPassword, 8)
+        await this.usersRepository.updatePassword(id, passwordHash)
     }
 
 }

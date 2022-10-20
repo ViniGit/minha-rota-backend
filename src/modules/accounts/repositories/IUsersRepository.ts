@@ -8,7 +8,8 @@ interface IUsersRepository {
     findByEmail(email: string): Promise<User>
     findById(id: string): Promise<User>
     findByCPF(id: string): Promise<User>
-    update(data: IUpdateUserDTO): Promise<void>
+    update(data: IUpdateUserDTO): Promise<User>
+    updatePassword(id: string, newPassword: string): Promise<void>
 }
 
 export { IUsersRepository }

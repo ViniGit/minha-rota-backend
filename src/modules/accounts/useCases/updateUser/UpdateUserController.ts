@@ -7,19 +7,29 @@ class UpdateUserController {
 
     async handle(request: Request, response: Response): Promise<Response> {
 
-        const { name, email, cpf, cell, birth_date, password, changePassword } = request.body
-        const { id } = request.params
+        try {
+            const { name, email, cpf, cell, birth_date, newPassword, changePassword, currentPassword } = request.body
+            const { id } = request.params
 
-        const updateUserUseCase = container.resolve(UpdateUserUseCase)
+            const updateUserUseCase = container.resolve(UpdateUserUseCase)
 
-        await updateUserUseCase.execute({ name, email, cpf, cell, birth_date, id })
+            let user = await updateUserUseCase.execute({ name, email, cpf, cell, birth_date, id })
 
-        // if(changePassword)
-        /** @todo fazer a lógica de alteração de senha */
-
-        return response.status(201).send()
-
+            if (changePassword) {
+                let correctPassword = await updateUserUseCase.verifyOldPassword(currentPassword, email)
+                if (correctPassword)
+                    await updateUserUseCase.updatePassword(id, newPassword)
+                    
+                user['logout'] = true
+            }
+            return response.status(201).json(user)
+        } catch (error) {
+            console.error(error)
+            return response.status(400).json(error)
+        }
     }
+
+
 }
 
 export { UpdateUserController }
