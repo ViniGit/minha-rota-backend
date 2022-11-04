@@ -23,10 +23,13 @@ class Route {
     user: User
 
     @Column()
-    distance_in_km: Number
+    distance: Number
 
     @Column()
-    price_per_km: Number
+    price: Number
+
+    @Column('boolean', { default: false })
+    inactive: boolean = false
 
     @CreateDateColumn()
     created_at: Date

@@ -5,16 +5,70 @@ import { Route } from "../../entities/Route";
 import { ICreateRouteDTO } from "../dtos/ICreateRouteDTO";
 import { IRouteRepository } from "../IRouteRepository";
 
+interface IResponse {
+    routes: Route[],
+    count: number
+}
+interface IRequest {
+    user_id: string,
+    take: number,
+    skip: number
+}
 class RouteRepository implements IRouteRepository {
     private repository: Repository<Route>
 
     constructor() {
         this.repository = AppDataSource.getRepository(Route)
     }
-    async create(data: ICreateRouteDTO): Promise<void> {
-        // const route = this.repository.create(data)
-        // await this.repository.save(data)
+
+    async create({ destination, distance, price, user }: ICreateRouteDTO): Promise<Route> {
+        const route = this.repository.create({
+            destination,
+            distance,
+            price,
+            user_id: user,
+        })
+        return this.repository.save(route)
     }
+
+    async getAll(user_id: string, take: number, skip: number): Promise<IResponse> {
+
+        const count = await this.repository
+            .createQueryBuilder('route')
+            .where('route.user_id = :id', { id: user_id })
+            .where('route.inactive != :value', { value: true })
+            .getCount()
+
+        const routes = await this.repository
+            .createQueryBuilder('route')
+            .select(['route.destination', 'route.distance', 'route.price', 'route.id'])
+            .where('route.user_id = :id', { id: user_id })
+            .where('route.inactive != :value', { value: true })
+            .orderBy('created_at', 'DESC')
+            .take(take)
+            .skip(skip)
+            .getMany()
+
+        const data = {
+            routes,
+            count
+        }
+
+        return data
+    }
+
+    async inactivate(id: string): Promise<void> {
+        await this.repository.
+            createQueryBuilder().
+            update(Route)
+            .
+            set({
+                inactive: true,
+            }).
+            where("id = :id", { id: id }).
+            execute()
+    }
+
     findByEmail(email: string): Promise<Route> {
         throw new Error("Method not implemented.");
     }
@@ -28,7 +82,7 @@ class RouteRepository implements IRouteRepository {
         throw new Error("Method not implemented.");
     }
 
-    
+
 }
 
 export { RouteRepository }

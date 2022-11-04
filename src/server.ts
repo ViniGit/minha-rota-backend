@@ -16,6 +16,9 @@ import cors from 'cors'
 
 const allowedOrigins = ['http://localhost:3000']
 
+import { pagination } from 'typeorm-pagination'
+
+
 const options: cors.CorsOptions = {
     origin: allowedOrigins
 }
@@ -30,6 +33,8 @@ AppDataSource.initialize()
         app.use(cors(options))
 
         app.use(express.json())
+
+        app.use(pagination)
 
         app.use(router)
 

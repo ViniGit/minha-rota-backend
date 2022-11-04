@@ -38,6 +38,10 @@ class UsersTokenRepository implements IUsersTokenRepository {
         throw new Error("Method not implemented.")
     }
 
+    async findByRefreshToken(refresh_token: string): Promise<UserTokens> {
+        const userToken = await this.respository.findOne({ where: { refresh_token } })
+        return userToken
+    }
 
 }
 

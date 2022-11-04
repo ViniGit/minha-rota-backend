@@ -5,7 +5,6 @@ interface ICreateUserDTO {
     cpf: string
     cell: string
     birth_date: string
-
 }
 
 export { ICreateUserDTO }
