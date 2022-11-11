@@ -5,4 +5,11 @@ interface ICreateRouteDTO {
     user: string
 }
 
-export { ICreateRouteDTO }
+interface IUpdateRouteDTO {
+    destination: string
+    distance: Number
+    price: Number,
+    id: string
+}
+
+export { ICreateRouteDTO, IUpdateRouteDTO }

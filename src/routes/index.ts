@@ -8,10 +8,11 @@ import { passwordRoutes } from "./password.routes"
 const router = Router()
 
 router.use("/password", passwordRoutes)
-router.use("/users", usersRoutes)
+router.use(authenticateRoutes)  
+
 router.use("/route", RouteRoutes)
+router.use("/users", usersRoutes)
 router.use(meRoutes)
-router.use(authenticateRoutes)
 
 
 export { router }

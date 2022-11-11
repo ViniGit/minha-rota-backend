@@ -26,7 +26,7 @@ class SendForgotPasswordMailUseCase {
         const templatePath = resolve(__dirname, "..", "..", "views", "emails", "forgotPassword.hbs")
 
         if (!user) {
-            throw new AppError('User does not exists!')
+            throw new AppError('E-mail enviado, confira sua caixa de entrada.')
         }
 
         const token = uuidV4()

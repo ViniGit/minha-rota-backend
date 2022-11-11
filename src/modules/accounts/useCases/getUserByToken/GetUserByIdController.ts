@@ -7,8 +7,9 @@ import { GetUserByIdUseCase } from "./GetUserByIdUseCase"
 class GetUserByIdController {
 
     async handle(request: Request, response: Response): Promise<Response> {
-
-        const user_id = request.user.id
+        let user_id
+        if (request.user && request.user.id)
+            user_id = request.user.id
 
         if (!user_id)
             throw new AppError('User not found!')

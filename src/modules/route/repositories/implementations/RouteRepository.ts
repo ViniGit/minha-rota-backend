@@ -2,7 +2,7 @@ import { Repository } from "typeorm"
 import { AppDataSource } from "../../../../database/data-source";
 import { AppError } from "../../../../errors/AppError"
 import { Route } from "../../entities/Route";
-import { ICreateRouteDTO } from "../dtos/ICreateRouteDTO";
+import { ICreateRouteDTO, IUpdateRouteDTO } from "../dtos/ICreateRouteDTO";
 import { IRouteRepository } from "../IRouteRepository";
 
 interface IResponse {
@@ -69,6 +69,29 @@ class RouteRepository implements IRouteRepository {
             execute()
     }
 
+    async update(data: IUpdateRouteDTO): Promise<void> {
+        try {
+            // let user = 
+            await this.repository.
+                createQueryBuilder().
+                update(Route).
+                set({
+                    destination: data.destination,
+                    distance: data.distance,
+                    price: data.price,
+                    // user_id: data.user,
+                }).
+                where("id = :id", { id: data.id }).
+                // returning('*').
+                execute()
+
+            // return user.raw[0]
+        } catch (error) {
+            throw new AppError("Não foi possível atualizar o usuário")
+        }
+            
+    }
+
     findByEmail(email: string): Promise<Route> {
         throw new Error("Method not implemented.");
     }
@@ -78,9 +101,7 @@ class RouteRepository implements IRouteRepository {
     findByCPF(id: string): Promise<Route> {
         throw new Error("Method not implemented.");
     }
-    update(data: ICreateRouteDTO): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
 
 
 }

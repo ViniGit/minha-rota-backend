@@ -17,6 +17,9 @@ export async function esureAuthenticated(request: Request, response: Response, n
 
     const [, token] = authHeader.split(" ")
 
+    if(!token)
+    throw new AppError("Token Missing", 401)
+
     try {
         const { sub: user_id } = verify(token, process.env.TOKEN_SECRET_KEY) as IPayload
 
