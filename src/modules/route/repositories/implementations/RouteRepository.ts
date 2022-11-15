@@ -21,6 +21,16 @@ class RouteRepository implements IRouteRepository {
         this.repository = AppDataSource.getRepository(Route)
     }
 
+    async countRoutes(user_id: string): Promise<Number> {
+        const count = await this.repository
+            .createQueryBuilder('route')
+            .where('route.user_id = :id', { id: user_id })
+            .where('route.inactive != :value', { value: true })
+            .getCount()
+
+        return count
+    }
+
     async create({ destination, distance, price, user }: ICreateRouteDTO): Promise<Route> {
         const route = this.repository.create({
             destination,
@@ -89,7 +99,6 @@ class RouteRepository implements IRouteRepository {
         } catch (error) {
             throw new AppError("Não foi possível atualizar o usuário")
         }
-            
     }
 
     findByEmail(email: string): Promise<Route> {

@@ -6,6 +6,8 @@ import { IUsersTokenRepository } from "../../modules/accounts/repositories/IUser
 import { UsersTokenRepository } from "../../modules/accounts/repositories/implementations/UsersTokenRepository"
 import { IRouteRepository } from "../../modules/route/repositories/IRouteRepository"
 import { RouteRepository } from "../../modules/route/repositories/implementations/RouteRepository"
+import { IVehicleRepository } from "../../modules/vehicle/repositories/IVehicleRepository"
+import { VehicleRepository } from "../../modules/vehicle/repositories/implementations/VehicleRepository"
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -20,4 +22,9 @@ container.registerSingleton<IUsersTokenRepository>(
 container.registerSingleton<IRouteRepository>(
     "RouteRepository",
     RouteRepository
+)
+
+container.registerSingleton<IVehicleRepository>(
+    "VehicleRepository",
+    VehicleRepository
 )

@@ -1,14 +1,14 @@
 import { Request, Response } from "express"
 import { container } from "tsyringe"
-import { InactivateRouteUseCase } from "./inactivateRouteUseCase"
+import { InactivateVehicleUseCase } from "./inactivateVehicleUseCase"
 
-class InactivateRouteController {
+class InactivateVehicleController {
 
     async handle(request: Request, response: Response): Promise<Response> {
         try {
             let id = String(request.query.id)
-            const inactivateRouteUseCase = container.resolve(InactivateRouteUseCase)
-            await inactivateRouteUseCase.execute(id)
+            const inactivateVehicleUseCase = container.resolve(InactivateVehicleUseCase)
+            await inactivateVehicleUseCase.execute(id)
 
             return response.status(200).send()
         } catch (error) {
@@ -18,4 +18,4 @@ class InactivateRouteController {
     }
 }
 
-export { InactivateRouteController }
+export { InactivateVehicleController }
