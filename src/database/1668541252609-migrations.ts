@@ -1,11 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class migrations1668459133545 implements MigrationInterface {
-    name = 'migrations1668459133545'
+export class migrations1668541252609 implements MigrationInterface {
+    name = 'migrations1668541252609'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "users_tokens" DROP CONSTRAINT "FKUserToken"`);
         await queryRunner.query(`ALTER TABLE "route" DROP CONSTRAINT "FKUserToken"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP CONSTRAINT "FKUserToken"`);
+        await queryRunner.query(`CREATE TABLE "expense" ("id" character varying NOT NULL, "description" character varying NOT NULL, "user_id" character varying NOT NULL, "type" character varying NOT NULL, "value" integer NOT NULL, "inactive" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_edd925b450e13ea36197c9590fc" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "users" DROP CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433"`);
         await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "id"`);
         await queryRunner.query(`ALTER TABLE "users" ADD "id" character varying NOT NULL`);
@@ -30,15 +32,35 @@ export class migrations1668459133545 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "route" DROP COLUMN "price"`);
         await queryRunner.query(`ALTER TABLE "route" ADD "price" integer NOT NULL`);
         await queryRunner.query(`ALTER TABLE "route" ALTER COLUMN "inactive" SET DEFAULT false`);
-        await queryRunner.query(`ALTER TABLE "route" ALTER COLUMN "inactive" SET DEFAULT false`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP CONSTRAINT "PK_187fa17ba39d367e5604b3d1ec9"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP COLUMN "id"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD "id" character varying NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD CONSTRAINT "PK_187fa17ba39d367e5604b3d1ec9" PRIMARY KEY ("id")`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP COLUMN "user_id"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD "user_id" character varying NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP COLUMN "km_per_lt"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD "km_per_lt" integer NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ALTER COLUMN "inactive" SET DEFAULT false`);
         await queryRunner.query(`ALTER TABLE "users_tokens" ADD CONSTRAINT "FK_32f96022cc5076fe565a5cba20b" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "route" ADD CONSTRAINT "FK_797177a310ed69b8ede51c81a55" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "expense" ADD CONSTRAINT "FK_8aed1abe692b31639ccde1b0416" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD CONSTRAINT "FK_362d4cb9148e53e7bbc2f660838" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP CONSTRAINT "FK_362d4cb9148e53e7bbc2f660838"`);
+        await queryRunner.query(`ALTER TABLE "expense" DROP CONSTRAINT "FK_8aed1abe692b31639ccde1b0416"`);
         await queryRunner.query(`ALTER TABLE "route" DROP CONSTRAINT "FK_797177a310ed69b8ede51c81a55"`);
         await queryRunner.query(`ALTER TABLE "users_tokens" DROP CONSTRAINT "FK_32f96022cc5076fe565a5cba20b"`);
-        await queryRunner.query(`ALTER TABLE "route" ALTER COLUMN "inactive" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ALTER COLUMN "inactive" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP COLUMN "km_per_lt"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD "km_per_lt" real NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP COLUMN "user_id"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD "user_id" uuid NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP CONSTRAINT "PK_187fa17ba39d367e5604b3d1ec9"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" DROP COLUMN "id"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD "id" uuid NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD CONSTRAINT "PK_187fa17ba39d367e5604b3d1ec9" PRIMARY KEY ("id")`);
         await queryRunner.query(`ALTER TABLE "route" ALTER COLUMN "inactive" DROP DEFAULT`);
         await queryRunner.query(`ALTER TABLE "route" DROP COLUMN "price"`);
         await queryRunner.query(`ALTER TABLE "route" ADD "price" real NOT NULL`);
@@ -63,8 +85,10 @@ export class migrations1668459133545 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "id"`);
         await queryRunner.query(`ALTER TABLE "users" ADD "id" uuid NOT NULL`);
         await queryRunner.query(`ALTER TABLE "users" ADD CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id")`);
-        await queryRunner.query(`ALTER TABLE "route" ADD CONSTRAINT "FKUserToken" FOREIGN KEY ("user_id", "user_id") REFERENCES "users"("id","id") ON DELETE CASCADE ON UPDATE CASCADE`);
-        await queryRunner.query(`ALTER TABLE "users_tokens" ADD CONSTRAINT "FKUserToken" FOREIGN KEY ("user_id", "user_id") REFERENCES "users"("id","id") ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`DROP TABLE "expense"`);
+        await queryRunner.query(`ALTER TABLE "vehicle" ADD CONSTRAINT "FKUserToken" FOREIGN KEY ("user_id", "user_id", "user_id") REFERENCES "users"("id","id","id") ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`ALTER TABLE "route" ADD CONSTRAINT "FKUserToken" FOREIGN KEY ("user_id", "user_id", "user_id") REFERENCES "users"("id","id","id") ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`ALTER TABLE "users_tokens" ADD CONSTRAINT "FKUserToken" FOREIGN KEY ("user_id", "user_id", "user_id") REFERENCES "users"("id","id","id") ON DELETE CASCADE ON UPDATE CASCADE`);
     }
 
 }

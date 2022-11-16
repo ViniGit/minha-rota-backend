@@ -8,6 +8,8 @@ import { IRouteRepository } from "../../modules/route/repositories/IRouteReposit
 import { RouteRepository } from "../../modules/route/repositories/implementations/RouteRepository"
 import { IVehicleRepository } from "../../modules/vehicle/repositories/IVehicleRepository"
 import { VehicleRepository } from "../../modules/vehicle/repositories/implementations/VehicleRepository"
+import { IExpenseRepository } from "../../modules/expense/repositories/IExpenseRepository"
+import { ExpenseRepository } from "../../modules/expense/repositories/implementations/ExpenseRepository"
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -27,4 +29,9 @@ container.registerSingleton<IRouteRepository>(
 container.registerSingleton<IVehicleRepository>(
     "VehicleRepository",
     VehicleRepository
+)
+
+container.registerSingleton<IExpenseRepository>(
+    "ExpenseRepository",
+    ExpenseRepository
 )
