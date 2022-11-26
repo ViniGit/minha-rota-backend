@@ -11,10 +11,11 @@ class CreateRouteUseCase {
         @inject("RouteRepository")
         private routeRepository: IRouteRepository) { }
 
-    async execute({ destination, distance, price, user }: ICreateRouteDTO): Promise<Route> {
+    async execute({ destination, distance, price, user, description }: ICreateRouteDTO): Promise<Route> {
 
         let route = await this.routeRepository.create({
             destination, 
+            description,
             distance, 
             price, 
             user

@@ -9,7 +9,7 @@ class UpdateRouteController {
 
     async handle(request: Request, response: Response): Promise<Response> {
         try {
-            const { destination, distance, price } = request.body
+            const { destination, distance, price, description } = request.body
             const id = String(request.params.id)
 
             if (!id)
@@ -18,7 +18,7 @@ class UpdateRouteController {
             const updateRouteUseCase = container.resolve(UpdateRouteUseCase)
 
             // let route = 
-            await updateRouteUseCase.execute({ destination, distance, price, id: id })
+            await updateRouteUseCase.execute({ destination, distance, price, description, id: id })
 
             return response.status(201).send()
         } catch (error) {

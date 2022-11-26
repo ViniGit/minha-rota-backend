@@ -2,7 +2,7 @@ import { Repository } from "typeorm"
 import { AppDataSource } from "../../../../database/data-source";
 import { AppError } from "../../../../errors/AppError"
 import { Expense } from "../../entities/Expense";
-import { ICreateExpenseDTO, IUpdateExpenseDTO } from "../dtos/ICreateExpenseDTO";
+import { ICreateExpenseDTO } from "../dtos/ICreateExpenseDTO";
 import { IExpenseRepository } from "../IExpenseRepository";
 
 interface IResponse {
@@ -21,11 +21,12 @@ class ExpenseRepository implements IExpenseRepository {
         this.repository = AppDataSource.getRepository(Expense)
     }
 
-    async create({ description, type, value, user }: ICreateExpenseDTO): Promise<Expense> {
+    async create({ description, type, value, user, route }: ICreateExpenseDTO): Promise<Expense> {
         const expense = this.repository.create({
             description,
             type,
             value,
+            route_id: route,
             user_id: user,
         })
         return this.repository.save(expense)
@@ -41,7 +42,7 @@ class ExpenseRepository implements IExpenseRepository {
 
         const expense = await this.repository
             .createQueryBuilder('expense')
-            .select(['expense.description', 'expense.type', 'expense.value', 'expense.id'])
+            .select(['expense.description', 'expense.type', 'expense.value', 'expense.id', 'expense.route_id'])
             .where('expense.user_id = :id', { id: user_id })
             .where('expense.inactive != :value', { value: true })
             .orderBy('created_at', 'DESC')
@@ -69,18 +70,19 @@ class ExpenseRepository implements IExpenseRepository {
             execute()
     }
 
-    async update(data: IUpdateExpenseDTO): Promise<void> {
+    async update(data: ICreateExpenseDTO): Promise<void> {
         try {
             await this.repository.
                 createQueryBuilder().
                 update(Expense).
                 set({
                     description: data.description,
+                    route_id: data.route,
                     type: data.type,
                     value: data.value,
                     // user_id: data.user,
                 }).
-                where("id = :id", { id: data.id }).
+                where("id = :id", { id: data.user }).
                 // returning('*').
                 execute()
 

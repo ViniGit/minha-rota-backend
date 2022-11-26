@@ -1,15 +1,10 @@
 interface ICreateExpenseDTO {
     description: string
+    route: string,
     type: string
     value: Number,
     user: string
 }
 
-interface IUpdateExpenseDTO {
-    description: string
-    type: string
-    value: Number,
-    id: string
-}
 
-export { ICreateExpenseDTO, IUpdateExpenseDTO }
+export { ICreateExpenseDTO }

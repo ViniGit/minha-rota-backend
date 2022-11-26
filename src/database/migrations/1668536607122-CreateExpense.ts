@@ -21,6 +21,10 @@ export class CreateExpense1668536607122 implements MigrationInterface {
                         type: "uuid"
                     },
                     {
+                        name: "route_id",
+                        type: "uuid"
+                    },
+                    {
                         name: "type",
                         type: "varchar"
                     },
@@ -45,10 +49,19 @@ export class CreateExpense1668536607122 implements MigrationInterface {
                 ],
                 foreignKeys: [
                     {
-                        name: "FKUserToken",
+                        name: "FKUser",
                         referencedTableName: "users",
                         referencedColumnNames: ["id"],
                         columnNames: ["user_id"],
+                        onDelete: "CASCADE",
+                        onUpdate: "CASCADE"
+
+                    },
+                    {
+                        name: "FKRoute",
+                        referencedTableName: "route",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["route_id"],
                         onDelete: "CASCADE",
                         onUpdate: "CASCADE"
 

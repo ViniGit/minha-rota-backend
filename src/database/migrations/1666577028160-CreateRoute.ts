@@ -17,6 +17,10 @@ export class CreateRoute1666577028160 implements MigrationInterface {
                         type: "varchar"
                     },
                     {
+                        name: "description",
+                        type: "varchar"
+                    },
+                    {
                         name: "user_id",
                         type: "uuid"
                     },

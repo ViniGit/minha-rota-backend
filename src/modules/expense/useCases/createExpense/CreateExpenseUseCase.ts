@@ -9,10 +9,11 @@ class CreateExpenseUseCase {
         @inject("ExpenseRepository")
         private expenseRepository: IExpenseRepository) { }
 
-    async execute({ description, type, value, user }: ICreateExpenseDTO): Promise<Expense> {
+    async execute({ description, type, value, user, route }: ICreateExpenseDTO): Promise<Expense> {
 
         let expense = await this.expenseRepository.create({
             description,
+            route,
             type,
             value,
             user

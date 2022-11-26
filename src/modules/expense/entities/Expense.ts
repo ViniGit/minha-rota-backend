@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn,
 import { User } from "../../accounts/entities/User"
 
 import { v4 as uuidV4 } from "uuid"
+import { Route } from "../../route/entities/Route"
 
 
 @Entity("expense")
@@ -17,6 +18,13 @@ class Expense {
 
     @Column()
     user_id: string
+
+    @Column()
+    route_id: string
+
+    @ManyToOne(() => Route)
+    @JoinColumn({ name: "route_id" })
+    route: Route
 
     @ManyToOne(() => User)
     @JoinColumn({ name: "user_id" })

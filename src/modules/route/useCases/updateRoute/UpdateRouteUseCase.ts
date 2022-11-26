@@ -11,13 +11,14 @@ class UpdateRouteUseCase {
         @inject("RouteRepository")
         private routeRepository: IRouteRepository) { }
 
-    async execute({ destination, distance, price, id }: IUpdateRouteDTO): Promise<void> {
+    async execute({ destination, distance, price, description, id }: IUpdateRouteDTO): Promise<void> {
 
         // let route = 
         await this.routeRepository.update({
-            destination, 
-            distance, 
-            price, 
+            destination,
+            description,
+            distance,
+            price,
             id
         })
     }

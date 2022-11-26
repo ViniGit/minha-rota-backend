@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe"
-import { IUpdateExpenseDTO } from "../../repositories/dtos/ICreateExpenseDTO"
+import { ICreateExpenseDTO } from "../../repositories/dtos/ICreateExpenseDTO"
 import { IExpenseRepository } from "../../repositories/IExpenseRepository"
 
 @injectable()
@@ -8,13 +8,14 @@ class UpdateExpenseUseCase {
         @inject("ExpenseRepository")
         private expenseRepository: IExpenseRepository) { }
 
-    async execute({ description, type, value, id }: IUpdateExpenseDTO): Promise<void> {
+    async execute({ description, type, value, user, route }: ICreateExpenseDTO): Promise<void> {
 
         await this.expenseRepository.update({
             description,
+            route,
             type,
             value,
-            id
+            user
         })
     }
 

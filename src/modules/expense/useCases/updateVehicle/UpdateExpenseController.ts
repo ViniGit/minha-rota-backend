@@ -7,7 +7,7 @@ class UpdateExpenseController {
 
     async handle(request: Request, response: Response): Promise<Response> {
         try {
-            const { description, type, value } = request.body
+            const { description, type, value, route } = request.body
             const id = String(request.params.id)
 
             if (!id)
@@ -15,7 +15,7 @@ class UpdateExpenseController {
 
             const updateExpenseUseCase = container.resolve(UpdateExpenseUseCase)
 
-            await updateExpenseUseCase.execute({ description, type, value, id: id })
+            await updateExpenseUseCase.execute({ description, type, value, route, user: id })
 
             return response.status(201).send()
         } catch (error) {

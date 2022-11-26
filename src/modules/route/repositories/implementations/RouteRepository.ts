@@ -31,9 +31,10 @@ class RouteRepository implements IRouteRepository {
         return count
     }
 
-    async create({ destination, distance, price, user }: ICreateRouteDTO): Promise<Route> {
+    async create({ destination, distance, price, user, description }: ICreateRouteDTO): Promise<Route> {
         const route = this.repository.create({
             destination,
+            description,
             distance,
             price,
             user_id: user,
@@ -51,7 +52,7 @@ class RouteRepository implements IRouteRepository {
 
         const routes = await this.repository
             .createQueryBuilder('route')
-            .select(['route.destination', 'route.distance', 'route.price', 'route.id'])
+            .select(['route.destination', 'route.distance', 'route.price', 'route.id', 'route.description'])
             .where('route.user_id = :id', { id: user_id })
             .where('route.inactive != :value', { value: true })
             .orderBy('created_at', 'DESC')
@@ -87,6 +88,7 @@ class RouteRepository implements IRouteRepository {
                 update(Route).
                 set({
                     destination: data.destination,
+                    description: data.description,
                     distance: data.distance,
                     price: data.price,
                     // user_id: data.user,
