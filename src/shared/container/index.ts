@@ -10,6 +10,8 @@ import { IVehicleRepository } from "../../modules/vehicle/repositories/IVehicleR
 import { VehicleRepository } from "../../modules/vehicle/repositories/implementations/VehicleRepository"
 import { IExpenseRepository } from "../../modules/expense/repositories/IExpenseRepository"
 import { ExpenseRepository } from "../../modules/expense/repositories/implementations/ExpenseRepository"
+import { ITravelRepository } from "../../modules/travel/repositories/ITravelRepository"
+import { TravelRepository } from "../../modules/travel/repositories/implementations/TravelRepository"
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -34,4 +36,9 @@ container.registerSingleton<IVehicleRepository>(
 container.registerSingleton<IExpenseRepository>(
     "ExpenseRepository",
     ExpenseRepository
+)
+
+container.registerSingleton<ITravelRepository>(
+    "TravelRepository",
+    TravelRepository
 )

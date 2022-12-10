@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm"
 
 import { User } from "../../accounts/entities/User"
 
 import { v4 as uuidV4 } from "uuid"
+import { Travel } from "../../travel/entities/Travel"
 
 
 @Entity("vehicle")
@@ -21,6 +22,9 @@ class Vehicle {
     @ManyToOne(() => User)
     @JoinColumn({ name: "user_id" })
     user: User
+
+    @OneToMany(() => Travel, (travel) => travel.vehicle)
+    vehicles: Vehicle[]
 
     @Column()
     type: string
