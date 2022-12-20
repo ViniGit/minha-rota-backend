@@ -11,7 +11,6 @@ const VehicleRoutes = Router()
 const createVehicleController = new CreateVehicleController()
 const getVehicleController = new GetVehicleController()
 const inactivateVehicleController = new InactivateVehicleController()
-// const inactivateRouteController = new InactivateRouteController()
 const updateVehicleController = new UpdateVehicleController()
 
 VehicleRoutes.use(esureAuthenticated)

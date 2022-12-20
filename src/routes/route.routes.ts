@@ -16,7 +16,6 @@ const updateRouteController = new UpdateRouteController()
 RouteRoutes.use(esureAuthenticated)
 RouteRoutes.post('/', createRouteController.handle)
 RouteRoutes.put('/:id', updateRouteController.handle)
-// usersRoutes.put('/:id', updateUserController.handle)
 RouteRoutes.get('/', getRouteController.handle)
 RouteRoutes.delete('/', inactivateRouteController.handle)
 

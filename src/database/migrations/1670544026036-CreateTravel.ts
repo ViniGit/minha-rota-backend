@@ -9,8 +9,10 @@ export class CreateTravel1670544026036 implements MigrationInterface {
                 columns: [
                     {
                         name: "id",
-                        type: "uuid",
-                        isPrimary: true
+                        type: "integer",
+                        isPrimary: true,
+                        isGenerated: true,
+                        generationStrategy: 'increment'
                     },
                     {
                         name: "description",

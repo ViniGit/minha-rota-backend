@@ -11,7 +11,6 @@ const ExpenseRoutes = Router()
 const createExpenseController = new CreateExpenseController()
 const getExpenseController = new GetExpenseController()
 const inactivateExpenseController = new InactivateExpenseController()
-// const inactivateRouteController = new InactivateRouteController()
 const updateExpenseController = new UpdateExpenseController()
 
 ExpenseRoutes.use(esureAuthenticated)

@@ -11,8 +11,8 @@ import { Vehicle } from "../../vehicle/entities/Vehicle"
 
 class Travel {
 
-    @PrimaryColumn()
-    id: string
+    @PrimaryGeneratedColumn()
+    id: number
 
     @Column()
     description: string
@@ -53,11 +53,11 @@ class Travel {
     @UpdateDateColumn()
     updated_at: Date
 
-    constructor() {
-        if (!this.id) {
-            this.id = uuidV4()
-        }
-    }
+    // constructor() {
+    //     if (!this.id) {
+    //         this.id = uuidV4()
+    //     }
+    // }
 
 }
 

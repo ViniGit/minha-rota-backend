@@ -1,21 +1,21 @@
 import { Request, Response } from "express"
 import { container } from "tsyringe"
 import { AppError } from "../../../../errors/AppError"
-import { UpdateVehicleUseCase } from "./UpdateVehicleUseCase"
+import { UpdateTravelUseCase } from "./UpdateTravelUseCase"
 
-class UpdateVehicleController {
+class UpdateTravelController {
 
     async handle(request: Request, response: Response): Promise<Response> {
         try {
-            const { plate, type, km_per_lt } = request.body
+            const { date, description, route_id, travels, vehicle_id } = request.body
             const id = String(request.params.id)
 
             if (!id)
                 throw new AppError("User id not found")
 
-            const updateVehicleUseCase = container.resolve(UpdateVehicleUseCase)
+            const updateTravelUseCase = container.resolve(UpdateTravelUseCase)
 
-            await updateVehicleUseCase.execute({ plate, type, km_per_lt, id: id })
+            await updateTravelUseCase.execute({ date, description, route_id, travels, user_id: id, vehicle_id })
 
             return response.status(201).send()
         } catch (error) {
@@ -25,4 +25,4 @@ class UpdateVehicleController {
     }
 }
 
-export { UpdateVehicleController }
+export { UpdateTravelController }
