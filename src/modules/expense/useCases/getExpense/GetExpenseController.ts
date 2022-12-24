@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { container } from "tsyringe"
-import { GetExpenseUseCase } from "./GetVehicleUseCase"
+import { GetExpenseUseCase } from "./GetExpenseUseCase"
 
 class GetExpenseController {
 

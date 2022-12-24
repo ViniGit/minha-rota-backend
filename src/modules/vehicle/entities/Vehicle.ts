@@ -36,10 +36,10 @@ class Vehicle {
     inactive: boolean = false
 
     @CreateDateColumn()
-    created_at: Date
+    created_at: Date = new Date()
 
     @UpdateDateColumn()
-    updated_at: Date
+    updated_at: Date = new Date()
 
     constructor() {
         if (!this.id) {

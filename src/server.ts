@@ -27,7 +27,7 @@ AppDataSource.initialize()
     .then(() => {
 
         console.log('Database initialized.')
-
+        
         const app = express()
 
         app.use(cors(options))
