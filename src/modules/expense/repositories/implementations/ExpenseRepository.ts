@@ -30,28 +30,16 @@ class ExpenseRepository implements IExpenseRepository {
     // @ts-ignore
     async getReport(data: IReport): Promise<Expense[]> {
 
-        const query = this.repository
-            .createQueryBuilder('expense')
-            .where('expense.user_id = :id', { id: data.user_id })
+        const query = getReportQuery(this.repository, data)
 
-        if (data.type)
-            query.andWhere('expense.type = :type', { type: data.type })
-
-        if (data.startDate && data.finalDate) {
-            query.andWhere('expense.created_at >= :startDate', { startDate: data.startDate })
-            query.andWhere('expense.created_at <= :finalDate', { finalDate: data.finalDate })
-        }
-
-
-        // const query2 = Object.assign(query, {})
-
-        // query.orderBy('created_at', 'ASC')
+        query.orderBy('created_at', 'ASC')
 
         // @TO DO ARRUMAR ESSA QUERY E BOTAR PRA BUSCAR POR ORDEM DE DATA
         const report = await query.getMany()
 
+        const queryTotal = getReportQuery(this.repository, data)
 
-        const totalValue = await query
+        const totalValue = await queryTotal
             .select('SUM(expense.value)', 'totalValue')
             .getRawOne()
 
@@ -59,6 +47,8 @@ class ExpenseRepository implements IExpenseRepository {
         return { report, totalValue }
 
     }
+
+
 
     async create({ description, type, value, user, route }: ICreateExpenseDTO): Promise<Expense> {
         const expense = this.repository.create({
@@ -131,6 +121,27 @@ class ExpenseRepository implements IExpenseRepository {
         }
     }
 
+}
+
+function getReportQuery(repository: Repository<Expense>, data: IReport) {
+    try {
+        const query = repository
+            .createQueryBuilder('expense')
+            .where('expense.user_id = :id', { id: data.user_id })
+
+        if (data.type)
+            query.andWhere('expense.type = :type', { type: data.type })
+
+        if (data.startDate && data.finalDate) {
+            query.andWhere('expense.created_at >= :startDate', { startDate: data.startDate })
+            query.andWhere('expense.created_at <= :finalDate', { finalDate: data.finalDate })
+        }
+
+        return query
+    } catch (error) {
+
+        throw new AppError("[getReportQuery] Erro ao realizar a consulta no banco.")
+    }
 }
 
 export { ExpenseRepository }

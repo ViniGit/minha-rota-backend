@@ -20,6 +20,11 @@ class VehicleRepository implements IVehicleRepository {
     constructor() {
         this.repository = AppDataSource.getRepository(Vehicle)
     }
+    
+    async findByPlate(plate: string): Promise<Vehicle> {
+        const vehicle = await this.repository.findOne({ where: { plate : plate } })
+        return vehicle
+    }
 
     async create({ plate, type, km_per_lt, user }: ICreateVehicleDTO): Promise<Vehicle> {
         const vehicle = this.repository.create({

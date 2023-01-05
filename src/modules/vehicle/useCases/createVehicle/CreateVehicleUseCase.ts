@@ -1,26 +1,30 @@
 import { inject, injectable } from "tsyringe"
-import { hash } from 'bcrypt'
-import { AppError } from "../../../../errors/AppError"
 import { ICreateVehicleDTO } from "../../repositories/dtos/ICreateVehicleDTO"
 import { IVehicleRepository } from "../../repositories/IVehicleRepository"
 import { Vehicle } from "../../entities/Vehicle"
+import { AppError } from "../../../../errors/AppError"
 
 @injectable()
 class CreateVehicleUseCase {
     constructor(
         @inject("VehicleRepository")
-        private routeRepository: IVehicleRepository) { }
+        private vehicleRepository: IVehicleRepository) { }
 
     async execute({ plate, type, km_per_lt, user }: ICreateVehicleDTO): Promise<Vehicle> {
 
-        let route = await this.routeRepository.create({
+        const vehicleExists = await this.vehicleRepository.findByPlate(plate)
+
+        if (vehicleExists)
+            throw new AppError('Vehicle already exists')
+
+        let vehicle = await this.vehicleRepository.create({
             plate,
             type,
             km_per_lt,
             user
         })
 
-        return route
+        return vehicle
     }
 
 }
